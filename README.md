@@ -58,7 +58,45 @@ The network consists of a main branch and two remote branches, all connected to 
 | Employees      | Branch 2   | 192.168.70.0/24 | 192.168.70.1   |
 
 ---
+## **Interface Assignments (All /24)**
 
+### **MLSW (Main L3 Switch)**
+- **G0/1 — 1.1.1.1** (connection to R0)
+
+### **R0 (Core Router)**
+- **G0/0/0 — 10.10.10.2** (to R1)
+- **G0/1**  
+  - 192.168.40.1  (VLAN 40 — Branch 1 Admin)  
+  - 192.168.50.1  (VLAN 50 — Branch 1 Employees)
+- **G0/0 — 1.1.1.2** (to MLSW)
+- **G0/2**  
+  - 192.168.60.1  (VLAN 60 — Branch 2 Admin)  
+  - 192.168.70.1  (VLAN 70 — Branch 2 Employees)
+
+SSH is enabled on R0.
+
+### **R1**
+- **G0/0/0 — 10.10.10.1** (to R0)
+- **G0/0 — 10.10.40.1** (to R4 — Backup route)
+- **G0/1 — 10.10.20.1** (to R2 — Main route)
+
+### **R2**
+- **G0/1 — 10.10.20.2** (to R1)
+- **G0/0 — 10.10.30.1** (to R3)
+
+### **R3**
+- **G0/0 — 10.10.30.2** (to R2)
+- **G0/2 — 10.10.50.2** (to R4)
+- **G0/1 — 11.22.33.1** (to R5 — Internet simulation)
+
+### **R4**
+- **G0/0 — 10.10.40.2** (to R1)
+- **G0/2 — 10.10.50.1** (to R3)
+
+### **R5 (Internet Router)**
+- **G0/1 — 11.22.33.2** (to R3)
+
+  
 ## **Configuration Files**
 
 The `Configurations/` folder contains all router and switch configuration files:
